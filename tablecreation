@@ -1,0 +1,40 @@
+--Creation of 4 new tables within the shoppingintention database:
+
+CREATE TABLE visitors
+  (vid SERIAL PRIMARY KEY, os INTEGER, browser INTEGER,
+  region INTEGER, traffic INTEGER, visitor_type VARCHAR(50),
+  revenue BOOLEAN, tid SERIAL, pdid SERIAL, gaid SERIAL)
+  
+CREATE TABLE analytics
+  (gaid SERIAL PRIMARY KEY, bounce_rate NUMERIC, 
+  exit_rate NUMERIC, page_value NUMERIC)
+  
+CREATE TABLE pageduration
+  (pdid SERIAL PRIMARY KEY, admin INTEGER, admin_duration INTEGER, 
+  info INTEGER, info_duration INTEGER, 
+  product INTEGER, product_duration INTEGER)
+
+CREATE TABLE time
+  (tid SERIAL PRIMARY KEY, specialday NUMERIC, 
+  sessiondate DATE, weekend BOOLEAN)
+  
+--Data was imported into each table via csv files using pgAdmin
+
+--Adding foreign keys to visitors, the main table with revenue: 
+
+ALTER TABLE visitors
+ADD FOREIGN KEY (tid)
+REFERENCES time(tid)
+
+ALTER TABLE visitors
+ADD FOREIGN KEY (gaid)
+REFERENCES analytics(gaid)
+
+ALTER TABLE visitors
+ADD FOREIGN KEYy (pdid)
+REFERENCES pageduration(pdid)
+
+--Double checking data was imported correctly
+
+SELECT * FROM visitors
+  LIMIT 5
